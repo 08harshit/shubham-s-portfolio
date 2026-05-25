@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Instrument+Sans:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0c0e10;
+        --bg-elev: #14181c;
+        --stroke: rgba(255, 255, 255, 0.08);
+        --text: rgba(248, 250, 252, 0.92);
+        --radius: 14px;
+        --shadow: 0 28px 80px rgba(0, 0, 0, 0.55);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Instrument Sans", system-ui, sans-serif;
+        color: var(--text);
+        background: radial-gradient(
+            1200px 800px at 12% -10%,
+            rgba(201, 169, 98, 0.12),
+            transparent 55%
+          ),
+          radial-gradient(
+            900px 600px at 90% 0%,
+            rgba(94, 125, 140, 0.12),
+            transparent 50%
+          ),
+          var(--bg);
+      }
+
+      body.preview-open {
+        overflow: hidden;
+      }
+
+      header {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 4vw, 2rem) 2rem;
+        display: flex;
+        align-items: flex-end;
+        gap: 1rem;
+        border-bottom: 1px solid var(--stroke);
+      }
+
+      header h1 {
+        margin: 0;
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 400;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+      }
+
+      main {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: clamp(1.5rem, 4vw, 2.75rem)
+          clamp(1.25rem, 4vw, 2rem)
+          clamp(3rem, 8vw, 5rem);
+      }
+
+      /* Masonry-style columns keep each card matched to the image height. */
+      .gallery {
+        column-count: 3;
+        column-gap: clamp(10px, 2vw, 18px);
+      }
+
+      figure {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        margin: 0 0 clamp(10px, 2vw, 18px);
+        overflow: hidden;
+        border-radius: var(--radius);
+        background: linear-gradient(145deg, #11161a, #080a0c);
+        box-shadow: var(--shadow);
+        border: 1px solid var(--stroke);
+        cursor: zoom-in;
+        isolation: isolate;
+      }
+
+      figure::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(
+          160deg,
+          rgba(255, 255, 255, 0.07) 0%,
+          transparent 42%
+        );
+        opacity: 0.55;
+      }
+
+      figure img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: opacity 0.25s ease;
+      }
+
+      figure:hover img {
+        opacity: 0.86;
+      }
+
+      .preview {
+        position: fixed;
+        inset: 0;
+        z-index: 20;
+        display: grid;
+        place-items: center;
+        padding: clamp(1rem, 4vw, 2rem);
+        background: rgba(4, 6, 8, 0.86);
+        backdrop-filter: blur(18px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+
+      .preview.is-open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .preview img {
+        max-width: min(100%, 1180px);
+        max-height: 90vh;
+        object-fit: contain;
+        border-radius: var(--radius);
+        background: rgba(0, 0, 0, 0.32);
+        box-shadow: 0 35px 100px rgba(0, 0, 0, 0.72);
+        transform: scale(0.96);
+        transition: transform 0.25s ease;
+      }
+
+      .preview.is-open img {
+        transform: scale(1);
+      }
+
+      .preview button {
+        position: absolute;
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--stroke);
+        border-radius: 999px;
+        color: var(--text);
+        background: rgba(20, 24, 28, 0.78);
+        cursor: pointer;
+        font: inherit;
+        font-size: 1.5rem;
+        line-height: 1;
+      }
+
+      .preview button:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .preview-close {
+        top: clamp(1rem, 3vw, 1.75rem);
+        right: clamp(1rem, 3vw, 1.75rem);
+      }
+
+      .preview-nav {
+        top: 50%;
+        width: 52px;
+        height: 52px;
+        font-size: 2rem;
+        transform: translateY(-50%);
+      }
+
+      .preview-prev {
+        left: clamp(1rem, 3vw, 1.75rem);
+      }
+
+      .preview-next {
+        right: clamp(1rem, 3vw, 1.75rem);
+      }
+
+      @media (max-width: 900px) {
+        .gallery {
+          column-count: 2;
+        }
+      }
+
+      @media (max-width: 520px) {
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .gallery {
+          column-count: 1;
+        }
+
+        .preview-nav {
+          top: auto;
+          bottom: 1rem;
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Portfolio</h1>
+    </header>
+
+    <main>
+      <div class="gallery" role="list">
+        <figure role="listitem">
+          <img
+            src="1000153946.jpg.jpeg"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <figure role="listitem">
+          <img
+            src="1000153947.jpg.jpeg"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <figure role="listitem">
+          <img
+            src="file_1776608562110.jpg.jpeg"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <figure role="listitem">
+          <img
+            src="file_1776610157021.jpg.jpeg"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <figure role="listitem">
+          <img
+            src="file_1777722421326.jpg.jpeg"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <figure role="listitem">
+          <img
+            src="file_1777723668913.jpg.jpeg"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <figure role="listitem">
+          <img
+            src="IMG_20260517_112339.jpg.jpeg"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <figure role="listitem">
+          <img src="View%2001.png" alt="" loading="lazy" decoding="async" />
+        </figure>
+        <figure role="listitem">
+          <img src="View%2002.png" alt="" loading="lazy" decoding="async" />
+        </figure>
+        <figure role="listitem">
+          <img src="View%2003.png" alt="" loading="lazy" decoding="async" />
+        </figure>
+        <figure role="listitem">
+          <img src="View%2004.png" alt="" loading="lazy" decoding="async" />
+        </figure>
+      </div>
+    </main>
+
+    <div class="preview" id="preview" aria-hidden="true">
+      <button
+        class="preview-close"
+        type="button"
+        id="closePreview"
+        aria-label="Close preview"
+      >
+        &times;
+      </button>
+      <button
+        class="preview-nav preview-prev"
+        type="button"
+        id="previousImage"
+        aria-label="Previous image"
+      >
+        &#8249;
+      </button>
+      <img id="previewImage" src="" alt="" />
+      <button
+        class="preview-nav preview-next"
+        type="button"
+        id="nextImage"
+        aria-label="Next image"
+      >
+        &#8250;
+      </button>
+    </div>
+
+    <script>
+      const preview = document.querySelector("#preview");
+      const previewImage = document.querySelector("#previewImage");
+      const closePreview = document.querySelector("#closePreview");
+      const previousImage = document.querySelector("#previousImage");
+      const nextImage = document.querySelector("#nextImage");
+      const galleryImages = Array.from(document.querySelectorAll(".gallery img"));
+      let activeImageIndex = 0;
+
+      function setPreviewImage(index) {
+        activeImageIndex =
+          (index + galleryImages.length) % galleryImages.length;
+        const image = galleryImages[activeImageIndex];
+        previewImage.src = image.currentSrc || image.src;
+      }
+
+      function openPreview(index) {
+        setPreviewImage(index);
+        preview.classList.add("is-open");
+        preview.setAttribute("aria-hidden", "false");
+        document.body.classList.add("preview-open");
+      }
+
+      function showPreviousImage() {
+        setPreviewImage(activeImageIndex - 1);
+      }
+
+      function showNextImage() {
+        setPreviewImage(activeImageIndex + 1);
+      }
+
+      function hidePreview() {
+        preview.classList.remove("is-open");
+        preview.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("preview-open");
+        previewImage.src = "";
+      }
+
+      galleryImages.forEach((image, index) => {
+        image.addEventListener("click", () => openPreview(index));
+      });
+
+      closePreview.addEventListener("click", hidePreview);
+      previousImage.addEventListener("click", showPreviousImage);
+      nextImage.addEventListener("click", showNextImage);
+
+      preview.addEventListener("click", (event) => {
+        if (event.target === preview) {
+          hidePreview();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        const isPreviewOpen = preview.classList.contains("is-open");
+
+        if (event.key === "Escape" && isPreviewOpen) {
+          hidePreview();
+        }
+
+        if (event.key === "ArrowLeft" && isPreviewOpen) {
+          showPreviousImage();
+        }
+
+        if (event.key === "ArrowRight" && isPreviewOpen) {
+          showNextImage();
+        }
+      });
+    </script>
+  </body>
+</html>
