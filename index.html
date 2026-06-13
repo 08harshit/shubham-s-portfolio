@@ -6,398 +6,245 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <title>Cactus Grid</title>
+    <title>Cactus Grid — Architectural Visualization</title>
+    <meta
+      name="description"
+      content="Cactus Grid creates photoreal architectural visualizations — exteriors, interiors, masterplans, and commercial renders for architects and developers."
+    />
+    <meta name="theme-color" content="#0c0e10" />
+    <meta property="og:title" content="Cactus Grid — Architectural Visualization" />
+    <meta
+      property="og:description"
+      content="Photoreal renders for unbuilt architecture — exteriors, interiors, masterplans, and commercial visualization."
+    />
+    <meta
+      property="og:image"
+      content="https://08harshit.github.io/shubham-s-portfolio/assets/images/hero/hero.webp"
+    />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Instrument+Sans:wght@400;500&display=swap"
       rel="stylesheet"
     />
-    <style>
-      :root {
-        --bg: #0c0e10;
-        --bg-elev: #14181c;
-        --stroke: rgba(255, 255, 255, 0.08);
-        --text: rgba(248, 250, 252, 0.92);
-        --radius: 14px;
-        --shadow: 0 28px 80px rgba(0, 0, 0, 0.55);
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      html {
-        -webkit-text-size-adjust: 100%;
-      }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        min-height: 100dvh;
-        overflow-x: hidden;
-        font-family: "Instrument Sans", system-ui, sans-serif;
-        color: var(--text);
-        background: radial-gradient(
-            1200px 800px at 12% -10%,
-            rgba(201, 169, 98, 0.12),
-            transparent 55%
-          ),
-          radial-gradient(
-            900px 600px at 90% 0%,
-            rgba(94, 125, 140, 0.12),
-            transparent 50%
-          ),
-          var(--bg);
-      }
-
-      body.preview-open {
-        overflow: hidden;
-      }
-
-      header {
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 4vw, 2rem) 2rem;
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        gap: 1rem;
-        flex-wrap: wrap;
-        border-bottom: 1px solid var(--stroke);
-      }
-
-      header h1 {
-        margin: 0;
-        font-family: "Cormorant Garamond", serif;
-        font-weight: 400;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        font-size: clamp(1.75rem, 4vw, 2.5rem);
-      }
-
-      .contact {
-        margin: 0;
-        font-size: 0.95rem;
-        letter-spacing: 0.04em;
-      }
-
-      .contact a {
-        color: rgba(201, 169, 98, 0.95);
-        text-decoration: none;
-        transition: opacity 0.2s ease;
-      }
-
-      .contact a:hover {
-        opacity: 0.75;
-      }
-
-      main {
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: clamp(1.5rem, 4vw, 2.75rem)
-          clamp(1.25rem, 4vw, 2rem)
-          clamp(3rem, 8vw, 5rem);
-      }
-
-      /*
-        Responsive gallery (masonry columns):
-        phone 1 col · tablet 2 col · laptop+ 3 col
-      */
-      .gallery {
-        column-count: 1;
-        column-gap: clamp(10px, 2.5vw, 18px);
-      }
-
-      figure {
-        position: relative;
-        display: inline-block;
-        width: 100%;
-        margin: 0 0 clamp(10px, 2vw, 18px);
-        overflow: hidden;
-        border-radius: var(--radius);
-        background: linear-gradient(145deg, #11161a, #080a0c);
-        box-shadow: var(--shadow);
-        border: 1px solid var(--stroke);
-        cursor: zoom-in;
-        isolation: isolate;
-      }
-
-      figure::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        background: linear-gradient(
-          160deg,
-          rgba(255, 255, 255, 0.07) 0%,
-          transparent 42%
-        );
-        opacity: 0.55;
-      }
-
-      figure img {
-        width: 100%;
-        height: auto;
-        display: block;
-        transition: opacity 0.25s ease;
-      }
-
-      @media (hover: hover) {
-        figure:hover img {
-          opacity: 0.86;
-        }
-      }
-
-      .preview {
-        position: fixed;
-        inset: 0;
-        z-index: 20;
-        display: grid;
-        place-items: center;
-        padding: clamp(1rem, 4vw, 2rem);
-        background: rgba(4, 6, 8, 0.86);
-        backdrop-filter: blur(18px);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.25s ease;
-      }
-
-      .preview.is-open {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .preview img {
-        width: auto;
-        max-width: min(100%, 1180px);
-        max-height: min(90vh, 90dvh);
-        object-fit: contain;
-        border-radius: var(--radius);
-        background: rgba(0, 0, 0, 0.32);
-        box-shadow: 0 35px 100px rgba(0, 0, 0, 0.72);
-        transform: scale(0.96);
-        transition: transform 0.25s ease;
-      }
-
-      .preview.is-open img {
-        transform: scale(1);
-      }
-
-      .preview button {
-        position: absolute;
-        min-width: 44px;
-        min-height: 44px;
-        width: 44px;
-        height: 44px;
-        border: 1px solid var(--stroke);
-        border-radius: 999px;
-        color: var(--text);
-        background: rgba(20, 24, 28, 0.78);
-        cursor: pointer;
-        font: inherit;
-        font-size: 1.5rem;
-        line-height: 1;
-        touch-action: manipulation;
-        -webkit-tap-highlight-color: transparent;
-      }
-
-      @media (hover: hover) {
-        .preview button:hover {
-          background: rgba(255, 255, 255, 0.12);
-        }
-      }
-
-      .preview-close {
-        top: clamp(1rem, 3vw, 1.75rem);
-        right: clamp(1rem, 3vw, 1.75rem);
-      }
-
-      .preview-nav {
-        top: 50%;
-        width: 52px;
-        height: 52px;
-        font-size: 2rem;
-        transform: translateY(-50%);
-      }
-
-      .preview-prev {
-        left: clamp(1rem, 3vw, 1.75rem);
-      }
-
-      .preview-next {
-        right: clamp(1rem, 3vw, 1.75rem);
-      }
-
-      /* Tablet: 640px and up */
-      @media (min-width: 640px) {
-        .gallery {
-          column-count: 2;
-        }
-      }
-
-      /* Laptop / desktop: 1024px and up */
-      @media (min-width: 1024px) {
-        .gallery {
-          column-count: 3;
-        }
-      }
-
-      /* Large screens */
-      @media (min-width: 1440px) {
-        header,
-        main {
-          max-width: 1400px;
-        }
-      }
-
-      /* Phone */
-      @media (max-width: 639px) {
-        header {
-          flex-direction: column;
-          align-items: flex-start;
-          padding-top: clamp(1.75rem, 5vw, 2.5rem);
-          padding-bottom: 1.25rem;
-        }
-
-        .contact {
-          font-size: 1rem;
-        }
-
-        figure {
-          border-radius: 12px;
-        }
-
-        .preview {
-          padding: max(0.75rem, env(safe-area-inset-top, 0px))
-            max(0.75rem, env(safe-area-inset-right, 0px))
-            max(5.5rem, env(safe-area-inset-bottom, 0px))
-            max(0.75rem, env(safe-area-inset-left, 0px));
-        }
-
-        .preview img {
-          max-width: 100%;
-          max-height: calc(100dvh - 8.5rem);
-        }
-
-        .preview-close {
-          top: max(0.75rem, env(safe-area-inset-top, 0.75rem));
-          right: max(0.75rem, env(safe-area-inset-right, 0.75rem));
-        }
-
-        .preview-nav {
-          top: auto;
-          bottom: max(1rem, env(safe-area-inset-bottom, 1rem));
-          transform: none;
-          width: 48px;
-          height: 48px;
-        }
-
-        .preview-prev {
-          left: max(1rem, env(safe-area-inset-left, 1rem));
-          right: auto;
-        }
-
-        .preview-next {
-          right: max(1rem, env(safe-area-inset-right, 1rem));
-          left: auto;
-        }
-      }
-
-      /* Tablet preview: keep side arrows, slightly smaller image area */
-      @media (min-width: 640px) and (max-width: 1023px) {
-        .preview img {
-          max-height: min(85vh, 85dvh);
-          max-width: min(92vw, 900px);
-        }
-
-        .preview-nav {
-          width: 48px;
-          height: 48px;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="assets/css/main.css" />
   </head>
   <body>
-    <header>
-      <h1>Cactus Grid</h1>
-      <p class="contact">
-        <a href="tel:+919924191271">9924191271</a>
-      </p>
+    <header class="site-nav" id="siteNav">
+      <div class="container">
+        <a class="logo" href="#">Cactus Grid</a>
+        <button
+          class="nav-toggle"
+          id="navToggle"
+          type="button"
+          aria-label="Toggle navigation"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#work">Work</a>
+          <a href="#services">Services</a>
+          <a href="#about">About</a>
+          <a class="nav-cta" href="#contact">Contact</a>
+        </nav>
+      </div>
     </header>
 
     <main>
-      <div class="gallery" role="list">
-        <figure role="listitem">
-          <img
-            src="1000153946.jpg.jpeg"
-            alt=""
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-        <figure role="listitem">
-          <img
-            src="1000153947.jpg.jpeg"
-            alt=""
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-        <figure role="listitem">
-          <img
-            src="file_1776608562110.jpg.jpeg"
-            alt=""
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-        <figure role="listitem">
-          <img
-            src="file_1776610157021.jpg.jpeg"
-            alt=""
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-        <figure role="listitem">
-          <img
-            src="file_1777722421326.jpg.jpeg"
-            alt=""
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-        <figure role="listitem">
-          <img
-            src="file_1777723668913.jpg.jpeg"
-            alt=""
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-        <figure role="listitem">
-          <img
-            src="IMG_20260517_112339.jpg.jpeg"
-            alt=""
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-        <figure role="listitem">
-          <img src="View%2001.png" alt="" loading="lazy" decoding="async" />
-        </figure>
-        <figure role="listitem">
-          <img src="View%2002.png" alt="" loading="lazy" decoding="async" />
-        </figure>
-        <figure role="listitem">
-          <img src="View%2003.png" alt="" loading="lazy" decoding="async" />
-        </figure>
-        <figure role="listitem">
-          <img src="View%2004.png" alt="" loading="lazy" decoding="async" />
-        </figure>
-      </div>
+      <section class="hero" id="top">
+        <div class="hero-media">
+          <picture>
+            <source
+              srcset="assets/images/hero/hero.webp"
+              type="image/webp"
+            />
+            <img
+              src="assets/images/hero/hero.jpg"
+              alt="Modern concrete residence set in a forest landscape at dusk"
+              fetchpriority="high"
+            />
+          </picture>
+        </div>
+        <div class="hero-overlay" aria-hidden="true"></div>
+        <div class="container hero-content">
+          <p class="section-label">Architectural Visualization</p>
+          <h1>Visualizing architecture before it exists</h1>
+          <p class="hero-tagline">
+            Photoreal renders for architects, developers, and designers —
+            exteriors, interiors, masterplans, and commercial projects
+            delivered with clarity and craft.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#work">View work</a>
+            <a class="btn btn-secondary" href="#contact">Start a project</a>
+          </div>
+          <div class="hero-meta">
+            <div>
+              <strong>Studio</strong>
+              <span>Cactus Grid</span>
+            </div>
+            <div>
+              <strong>Focus</strong>
+              <span>Arch Viz &amp; Masterplans</span>
+            </div>
+            <div>
+              <strong>Reach</strong>
+              <span>India · Global clients</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="work">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <p class="section-label">Selected Work</p>
+              <h2 class="section-title">Projects</h2>
+            </div>
+            <div class="filters" role="tablist" aria-label="Filter projects">
+              <button class="filter-btn is-active" type="button" data-filter="all">
+                All
+              </button>
+              <button class="filter-btn" type="button" data-filter="exterior">
+                Exteriors
+              </button>
+              <button class="filter-btn" type="button" data-filter="interior">
+                Interiors
+              </button>
+              <button class="filter-btn" type="button" data-filter="masterplan">
+                Masterplans
+              </button>
+              <button class="filter-btn" type="button" data-filter="commercial">
+                Commercial
+              </button>
+            </div>
+          </div>
+          <div class="gallery" id="gallery" role="list"></div>
+        </div>
+      </section>
+
+      <section id="services">
+        <div class="container">
+          <p class="section-label">What we do</p>
+          <h2 class="section-title">Services</h2>
+          <p class="section-lead">
+            From single hero shots to full masterplan campaigns — focused
+            deliverables built for presentations, approvals, and marketing.
+          </p>
+          <div class="services-grid">
+            <article class="service-card">
+              <span>01</span>
+              <h3>Exterior visualization</h3>
+              <p>
+                Photoreal facades and contextual environments that help
+                projects win approvals and pre-sales.
+              </p>
+            </article>
+            <article class="service-card">
+              <span>02</span>
+              <h3>Interior visualization</h3>
+              <p>
+                Lifestyle-led interior renders that communicate materiality,
+                light, and spatial quality.
+              </p>
+            </article>
+            <article class="service-card">
+              <span>03</span>
+              <h3>Masterplan &amp; aerial</h3>
+              <p>
+                Large-scale site vision — aerial integrations, illustrated
+                masterplans, and urban context studies.
+              </p>
+            </article>
+            <article class="service-card">
+              <span>04</span>
+              <h3>Commercial &amp; industrial</h3>
+              <p>
+                Warehouses, office lobbies, mixed-use, and hospitality visuals
+                for commercial stakeholders.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="container">
+          <p class="section-label">Studio</p>
+          <h2 class="section-title">Built for architects who need clarity</h2>
+          <p class="section-lead">
+            Cactus Grid is an architectural visualization studio crafting
+            still imagery for residential, commercial, and masterplan projects.
+            We work closely with architects and developers to translate drawings
+            into images that communicate intent — before anything is built.
+          </p>
+          <ol class="process-list">
+            <li>
+              <em>01</em>
+              <div>Brief &amp; references — scope, camera angles, mood, and timeline.</div>
+            </li>
+            <li>
+              <em>02</em>
+              <div>Model &amp; composition — geometry, materials, and framing.</div>
+            </li>
+            <li>
+              <em>03</em>
+              <div>Lighting &amp; atmosphere — time of day, context, and realism.</div>
+            </li>
+            <li>
+              <em>04</em>
+              <div>Delivery — high-resolution stills ready for print and presentation.</div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="container">
+          <p class="section-label">Get in touch</p>
+          <h2 class="section-title">Start a project</h2>
+          <p class="section-lead">
+            Share your drawings, references, and timeline — we will respond with
+            scope and next steps.
+          </p>
+          <div class="contact-panel">
+            <div class="contact-links">
+              <a class="contact-link" href="tel:+919924191271">
+                <strong>+91 99241 91271</strong>
+                <span>Call</span>
+              </a>
+            </div>
+            <div class="contact-note">
+              <p>
+                Typical projects include exterior hero shots, interior lifestyle
+                sets, masterplan aerials, and commercial facility renders.
+              </p>
+              <p>
+                Based in India, working with architects and developers globally.
+                Send plans, sketches, or a brief — we will take it from there.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <span>&copy; <span id="year"></span> Cactus Grid</span>
+        <a href="tel:+919924191271">+91 99241 91271</a>
+      </div>
+    </footer>
+
+    <div class="mobile-bar" aria-hidden="false">
+      <div class="mobile-bar-inner">
+        <a class="btn btn-primary" href="tel:+919924191271">Call +91 99241 91271</a>
+      </div>
+    </div>
 
     <div class="preview" id="preview" aria-hidden="true">
       <button
@@ -416,7 +263,10 @@
       >
         &#8249;
       </button>
-      <img id="previewImage" src="" alt="" />
+      <picture>
+        <source id="previewSource" srcset="" type="image/webp" />
+        <img id="previewImage" src="" alt="" />
+      </picture>
       <button
         class="preview-nav preview-next"
         type="button"
@@ -425,75 +275,15 @@
       >
         &#8250;
       </button>
+      <div class="preview-meta">
+        <strong id="previewTitle"></strong>
+        <span id="previewCategory"></span>
+      </div>
     </div>
 
     <script>
-      const preview = document.querySelector("#preview");
-      const previewImage = document.querySelector("#previewImage");
-      const closePreview = document.querySelector("#closePreview");
-      const previousImage = document.querySelector("#previousImage");
-      const nextImage = document.querySelector("#nextImage");
-      const galleryImages = Array.from(document.querySelectorAll(".gallery img"));
-      let activeImageIndex = 0;
-
-      function setPreviewImage(index) {
-        activeImageIndex =
-          (index + galleryImages.length) % galleryImages.length;
-        const image = galleryImages[activeImageIndex];
-        previewImage.src = image.currentSrc || image.src;
-      }
-
-      function openPreview(index) {
-        setPreviewImage(index);
-        preview.classList.add("is-open");
-        preview.setAttribute("aria-hidden", "false");
-        document.body.classList.add("preview-open");
-      }
-
-      function showPreviousImage() {
-        setPreviewImage(activeImageIndex - 1);
-      }
-
-      function showNextImage() {
-        setPreviewImage(activeImageIndex + 1);
-      }
-
-      function hidePreview() {
-        preview.classList.remove("is-open");
-        preview.setAttribute("aria-hidden", "true");
-        document.body.classList.remove("preview-open");
-        previewImage.src = "";
-      }
-
-      galleryImages.forEach((image, index) => {
-        image.addEventListener("click", () => openPreview(index));
-      });
-
-      closePreview.addEventListener("click", hidePreview);
-      previousImage.addEventListener("click", showPreviousImage);
-      nextImage.addEventListener("click", showNextImage);
-
-      preview.addEventListener("click", (event) => {
-        if (event.target === preview) {
-          hidePreview();
-        }
-      });
-
-      document.addEventListener("keydown", (event) => {
-        const isPreviewOpen = preview.classList.contains("is-open");
-
-        if (event.key === "Escape" && isPreviewOpen) {
-          hidePreview();
-        }
-
-        if (event.key === "ArrowLeft" && isPreviewOpen) {
-          showPreviousImage();
-        }
-
-        if (event.key === "ArrowRight" && isPreviewOpen) {
-          showNextImage();
-        }
-      });
+      document.getElementById("year").textContent = new Date().getFullYear();
     </script>
+    <script type="module" src="assets/js/main.js"></script>
   </body>
 </html>
